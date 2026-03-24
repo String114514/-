@@ -1,0 +1,11 @@
+# 后端
+target/
+*.iml
+.idea/
+*.log
+
+# 前端
+node_modules/
+dist/
+.env
+.DS_Store
