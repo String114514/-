@@ -2,6 +2,7 @@ import { ElMessage } from 'element-plus'
 import router from '../router'
 import axios from "axios";
 
+// 这是一个 前端请求后台的工具类
 const request = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
     timeout: 30000  // 后台接口超时时间设置

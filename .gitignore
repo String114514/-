@@ -1,6 +1,8 @@
 # 后端
 target/
 *.iml
+*.iws
+*.ipr
 .idea/
 *.log
 
@@ -8,4 +10,12 @@ target/
 node_modules/
 dist/
 .env
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm
+.yarn-integrity
+
+# 系统文件
 .DS_Store
+Thumbs.db

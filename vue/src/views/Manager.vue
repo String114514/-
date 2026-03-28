@@ -4,7 +4,7 @@
       <div style="flex: 1">
         <div style="padding-left: 20px; display: flex; align-items: center">
           <img src="@/assets/imgs/logo.png" alt="" style="width: 40px">
-          <div style="font-weight: bold; font-size: 24px; margin-left: 5px; color: #fff">小白做毕设2026</div>
+          <div style="font-weight: bold; font-size: 24px; margin-left: 5px; color: #fff">校园小卖部</div>
         </div>
       </div>
       <div style="width: fit-content; padding-right: 10px; display: flex; align-items: center;">
@@ -30,6 +30,10 @@
               <el-icon><User /></el-icon>
               <span>用户管理</span>
             </template>
+            <el-menu-item index="/manager/user">
+              <el-icon><User /></el-icon>
+              <span>普通用户</span>
+            </el-menu-item>
             <el-menu-item index="/manager/admin">
               <el-icon><User /></el-icon>
               <span>管理员信息</span>
@@ -79,6 +83,6 @@ const logout = () => {
   background-color: #d7d7e6 !important;
 }
 .el-menu-item:hover {
-  color: #000;
+  color: #ff0000;
 }
 </style>
