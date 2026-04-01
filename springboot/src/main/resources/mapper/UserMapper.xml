@@ -18,7 +18,7 @@
     </delete>
 
     <insert id="insert" parameterType="com.example.entity.User">
-        insert into `user`(username, passowrd, name, avatar, role, account)
+        insert into `user`(username, password, name, avatar, role, account)
         values (#{username}, #{password}, #{name}, #{avatar}, #{role}, #{account})
     </insert>
 
