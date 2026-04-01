@@ -1,4 +1,4 @@
-<template>
+<template >
   <div class="login-container">
     <div class="login-box">
       <div style="font-weight: bold; font-size: 30px; text-align: center; margin-bottom: 30px; color: #1967e3">欢 迎 登 录</div>
@@ -86,4 +86,6 @@
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
   background-color: #fff;
 }
+
+
 </style>

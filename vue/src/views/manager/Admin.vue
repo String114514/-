@@ -2,7 +2,8 @@
   <div>
 
     <div class="card" style="margin-bottom: 5px;">
-      <el-input v-model="data.name" style="width: 300px; margin-right: 10px" placeholder="请输入名称查询"></el-input>
+      <el-input v-model="data.name" style="width: 300px; margin-right: 10px" placeholder="请输入名称查询"
+                :prefix-icon="Search"/>
       <el-button type="primary" @click="load">查询</el-button>
       <el-button type="info" style="margin: 0 10px" @click="reset">重置</el-button>
     </div>
@@ -29,8 +30,16 @@
       </el-table>
     </div>
 
-    <div class="card">
-      <el-pagination background layout="prev, pager, next" v-model:page-size="data.pageSize" v-model:current-page="data.pageNum" :total="data.total"/>
+    <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+      <el-pagination
+          background layout="prev, pager, next"
+          v-model:page-size="data.pageSize"
+          v-model:current-page="data.pageNum"
+          :total="data.total"
+      />
+      <div style="font-size: 14px; color: #666;">
+        共<span style="font-weight: 600; color: #1890ff;">{{ data.total }}</span>条
+      </div>
     </div>
 
     <el-dialog title="信息" width="30%" v-model="data.formVisible" :close-on-click-modal="false" destroy-on-close>
@@ -41,10 +50,10 @@
           </el-upload>
         </el-form-item>
         <el-form-item label="账号" prop="username">
-          <el-input :disabled="data.form.id" v-model="data.form.username" autocomplete="off" />
+          <el-input :disabled="data.form.id" v-model="data.form.username" autocomplete="off"/>
         </el-form-item>
         <el-form-item label="名称" prop="name">
-          <el-input v-model="data.form.name" autocomplete="off" />
+          <el-input v-model="data.form.name" autocomplete="off"/>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -62,6 +71,7 @@
 import request from "@/utils/request";
 import {reactive} from "vue";
 import {ElMessageBox, ElMessage} from "element-plus";
+import {Search} from "@element-plus/icons-vue";
 
 // 文件上传的接口地址
 const uploadUrl = import.meta.env.VITE_BASE_URL + '/files/upload'
@@ -136,7 +146,7 @@ const save = () => {
 
 // 删除
 const handleDelete = (id) => {
-  ElMessageBox.confirm('删除后数据无法恢复，您确定删除吗?', '删除确认', { type: 'warning' }).then(res => {
+  ElMessageBox.confirm('删除后数据无法恢复，您确定删除吗?', '删除确认', {type: 'warning'}).then(res => {
     request.delete('/admin/delete/' + id).then(res => {
       if (res.code === '200') {
         load()
@@ -145,7 +155,8 @@ const handleDelete = (id) => {
         ElMessage.error(res.msg)
       }
     })
-  }).catch(err => {})
+  }).catch(err => {
+  })
 }
 
 // 重置
