@@ -6,7 +6,13 @@
 说明 本项目仅用于**学习与毕业设计参考**，未经原作者授权，禁止用于商业用途或二次转载。
 
 
+2、前置环境
+- JDK 22
+- MySQL 8.0+
+- Maven 3.8+
+- Node 16+ / 18+
+- SpringBoot 3 + Vue3
 
-2、代码拉取及数据库配置
+3、代码拉取及数据库配置教程
 https://xcn06qbmfkq0.feishu.cn/wiki/DSNrwLeIBiazJrkj6IEc66qOntg
 
