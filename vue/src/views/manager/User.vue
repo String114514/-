@@ -7,18 +7,23 @@
   </div>
   <div class="card" style="margin-bottom: 5px;">
     <div style="margin-bottom: 5px">
-      <!-- 注意：你原代码里新增按钮的click事件绑成了load，建议后续改成新增的方法，这里先保留你的原代码 -->
       <el-button @click="handleAdd" type="primary">新增</el-button>
     </div>
     <div>
       <el-table :data="data.tableData" stripe style="width: 100%">
         <el-table-column prop="username" label="账号"/>
         <el-table-column prop="name" label="姓名"/>
+        <el-table-column prop="avatar" label="头像">
+          <template #default="scope">
+            <el-image v-if="scope.row.avatar" style="width: 50px; height: 50px; display: block; border-radius: 50%; border: 2px solid gray; box-sizing: border-box"
+                      :src="scope.row.avatar" :preview-src-list="[scope.row.avatar]" preview-teleported></el-image>
+          </template>
+        </el-table-column>
         <el-table-column prop="role" label="角色"/>
         <el-table-column prop="account" label="账户余额"/>
         <el-table-column label="操作" width="180">
           <template #default="scope">
-            <el-button type="primary">编辑</el-button>
+            <el-button type="primary" @click="handleEdit(scope.row)">编辑</el-button>
             <el-button type="danger" @click="del(scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
@@ -42,13 +47,24 @@
 
   </div>
 
-  <el-dialog title="用户信息" v-model="data.formVisible" width="30%">
-    <el-form :model="data.form" label-width="80px" style="padding-right: 30px">
-      <el-form-item label="账号">
-        <el-input v-model="data.form.username" placeholder="请输入账号" autocomplete="off"></el-input>
+  <el-dialog title="用户信息" v-model="data.formVisible" width="30%" destroy-on-close>
+    <el-form ref="formRef" :model="data.form" :rules="data.rules" label-width="80px" style="padding-right: 30px">
+      <el-form-item prop="username" label="账号">
+        <el-input :disabled="data.form.id !== undefined" v-model="data.form.username" placeholder="请输入账号" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="姓名">
+
+      <el-form-item prop="name" label="姓名">
         <el-input v-model="data.form.name" placeholder="请输入姓名" autocomplete="off"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="avatar" label="头像">
+        <el-upload
+            :action="baseUrl + '/files/upload'"
+            list-type="picture"
+            :on-success="handleFileUpload"
+        >
+          <el-button type="primary">点击上传</el-button>
+        </el-upload>
       </el-form-item>
 
     </el-form>
@@ -63,10 +79,13 @@
 </template>
 
 <script setup>
-import {reactive} from "vue";
+import {reactive, ref} from "vue";
 import {Search} from "@element-plus/icons-vue";
 import request from "@/utils/request";
 import {ElMessage, ElMessageBox} from "element-plus";
+
+const baseUrl = import.meta.env.VITE_BASE_URL
+const formRef = ref()
 
 const data = reactive({
   name: null,
@@ -75,9 +94,13 @@ const data = reactive({
   pageNum: 1,
   pageSize: 5,
   formVisible: false,
-  form: {
+  form: {},
+  rules: {
+    username: [{required: true, message: '请输入账号', trigger: 'blur'},
+    ]
   }
 })
+
 // 分页查询数据的函数
 const load = () => {
   request.get('/user/selectPage', {
@@ -114,7 +137,8 @@ const del = (id) => {
         ElMessage.error(res.msg)
       }
     })
-  }).catch(err => {})
+  }).catch(err => {
+  })
 }
 
 const handleAdd = () => {
@@ -122,8 +146,14 @@ const handleAdd = () => {
   data.formVisible = true
 }
 
-const save = () => {
-  request.post('/user/add',data.form).then(res => {
+const handleEdit = (row) => {
+  // 先把row变成字符串 后转为对象
+  data.form = JSON.parse(JSON.stringify(row))
+  data.formVisible = true
+}
+
+const add = () => {
+  request.post('/user/add', data.form).then(res => {
     if (res.code === '200') {
       ElMessage.success('操作成功')
       data.formVisible = false
@@ -133,4 +163,31 @@ const save = () => {
     }
   })
 }
+
+const updata = () => {
+  request.put('/user/update', data.form).then(res => {
+    if (res.code === '200') {
+      ElMessage.success('操作成功')
+      data.formVisible = false
+      load()
+    } else {
+      ElMessage.error(res.msg)
+    }
+  })
+}
+
+const save = () => {
+  formRef.value.validate((valid) => {
+    if (valid) {    // 表示表单验证通过
+      data.form.id ? updata() : add()
+    }
+  })
+}
+
+// 表单头像上传组件的回调函数  res.data 就是头像的url
+const handleFileUpload = (res) => {
+  data.form.avatar = res.data
+}
+
 </script>
+

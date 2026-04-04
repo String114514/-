@@ -2,6 +2,7 @@ package com.example.service;
 
 import cn.hutool.core.util.StrUtil;
 import com.example.entity.User;
+import com.example.exception.CustomException;
 import com.example.mapper.UserMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -36,10 +37,17 @@ public class UserService {
     }
 
     public void add(User user) {
+        String username = user.getUsername();
+        // 校验账号是否重复
+        User dbUser = userMapper.selectByUsername(username);
+        if (dbUser != null) {
+            throw new CustomException("新增失败！账号重复");
+        }
+
         if (StrUtil.isBlank(user.getPassword())) {
 
             // 默认密码
-            user.setName("小白");
+            user.setPassword("123");
         }
         if (StrUtil.isBlank(user.getName())) {
 
@@ -49,5 +57,10 @@ public class UserService {
         user.setRole("普通用户");   // 默认用户的角色
         user.setAccount(BigDecimal.ZERO);   // 默认用户的账户余额
         userMapper.insert(user);
+    }
+
+    public void update(User user) {
+        // user对象里面必须包含ID，否则无法更新数据
+        userMapper.updateById(user);
     }
 }

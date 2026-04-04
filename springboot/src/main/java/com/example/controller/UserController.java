@@ -47,4 +47,14 @@ public class UserController {
         userService.add(user);
         return Result.success();
     }
+
+    /**
+     * 更新数据
+     * @param user 参数的对象 编辑后的数据
+     */
+    @PutMapping("/update")
+    public Result update(@RequestBody User user) {
+        userService.update(user);
+        return Result.success();
+    }
 }
