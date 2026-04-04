@@ -4,17 +4,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.mapper.UserMapper">
 
-
     <select id="selectAll" resultType="com.example.entity.User">
         select * from `user`
         <where>
             <if test="name != null">name like concat('%',#{name},'%')</if>
         </where>
-        order by id desc
-    </select>
-
-    <select id="selectByUsername" resultType="com.example.entity.User">
-        select * from `user` where username = #{username}
     </select>
 
     <delete id="deleteById">
@@ -27,16 +21,5 @@
         insert into `user`(username, password, name, avatar, role, account)
         values (#{username}, #{password}, #{name}, #{avatar}, #{role}, #{account})
     </insert>
-
-    <update id="updateById">
-        update `user`
-        set username = #{username},
-            password = #{password},
-            name     = #{name},
-            avatar   = #{avatar},
-            role     = #{role},
-            account  = #{account}
-        where id = #{id}
-    </update>
 
 </mapper>
