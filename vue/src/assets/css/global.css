@@ -21,5 +21,41 @@ th {
     background-color: #fff;
     border-radius: 5px;
     padding: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+}
+
+.front-container {
+    width: 60%;
+    margin: 0 auto;
+    padding-top: 10px;
+    min-height: 100vh;
+}
+
+
+/* 旋转派蒙盒子共性 */
+/* 父容器：垂直排列，login-box居中，.rotate在下方 */
+.rotate {
+    perspective: 800px;
+    transition: all 2s ease; /* 新增：所有样式变化2s平滑过渡，ease是缓动曲线更自然 */
+}
+
+.login-container {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column; /* 垂直排列，解决.rotate跑到右边的问题 */
+    justify-content: flex-start; /* 从顶部开始排列 */
+    align-items: center; /* 子元素水平居中 */
+    background-size: cover;
+    padding-top: 105px; /* 给login-box留顶部空间 */
+}
+
+/* 登录框：水平+垂直居中（在父容器内） */
+.login-box {
+    width: 350px;
+    padding: 50px 30px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    background-color: #fff;
+    margin-bottom: 100px; /* 给.rotate留出向下的空间，数值越大.rotate越靠下 */
 }

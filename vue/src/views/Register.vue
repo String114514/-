@@ -1,28 +1,31 @@
-<template >
+<template>
   <div class="login-container">
     <div class="login-box">
-      <div style="font-weight: bold; font-size: 30px; text-align: center; margin-bottom: 30px; color: #1967e3">欢 迎 登 录</div>
-      <el-form :model="data.form"  ref="formRef" :rules="data.rules">
+      <div style="font-weight: bold; font-size: 30px; text-align: center; margin-bottom: 30px; color: #009372">欢 迎 注 册
+      </div>
+      <el-form :model="data.form" ref="formRef" :rules="data.rules">
         <el-form-item prop="username">
-          <el-input :prefix-icon="User" size="large" v-model="data.form.username" placeholder="请输入账号" />
+          <el-input :prefix-icon="User" size="large" v-model="data.form.username" placeholder="请输入账号"/>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input :prefix-icon="Lock" size="large" v-model="data.form.password" placeholder="请输入密码" show-password />
+          <el-input :prefix-icon="Lock" size="large" v-model="data.form.password" placeholder="请输入密码"
+                    show-password/>
         </el-form-item>
-        <el-form-item prop="role">
-          <el-select size="large" style="width: 100%" v-model="data.form.role">
-            <el-option value="普通用户" label="普通用户"></el-option>
-            <el-option value="管理员" label="管理员"></el-option>
-          </el-select>
+
+        <el-form-item prop="newPassword">
+          <el-input :prefix-icon="Lock" size="large" v-model="data.form.newPassword" placeholder="请确认密码"
+                    show-password/>
         </el-form-item>
+
         <el-form-item>
-          <el-button size="large" type="primary" style="width: 100%" @click="login">登 录</el-button>
+          <el-button size="large" style="width: 100%; background-color:#009372; color: white;" @click="register">注 册</el-button>
         </el-form-item>
       </el-form>
       <div style="text-align: right;">
-        还没有账号？请 <a href="/register">注册</a>
+        已有账号？请 <a href="/login">登录</a>
       </div>
     </div>
+
 
     <div class="rotate">
       <section>
@@ -36,61 +39,59 @@
       </section>
     </div>
 
-
   </div>
+
 </template>
 
 <script setup>
-  import { reactive, ref } from "vue";
-  import { User, Lock } from "@element-plus/icons-vue";
-  import request from "@/utils/request";
-  import {ElMessage} from "element-plus";
-  import router from "@/router";
+import {reactive, ref} from "vue";
+import {User, Lock} from "@element-plus/icons-vue";
+import request from "@/utils/request";
+import {ElMessage} from "element-plus";
+import router from "@/router";
 
-  const data = reactive({
-    form: { role: '管理员' },
-    rules: {
-      username: [
-        { required: true, message: '请输入账号', trigger: 'blur' },
-      ],
-      password: [
-        { required: true, message: '请输入密码', trigger: 'blur' },
-      ],
-    }
-  })
-
-  const formRef = ref()
-
-  // 点击登录按钮的时候会触发这个方法
-  const login = () => {
-    formRef.value.validate((valid => {
-      if (valid) {
-        // 调用后台的接口
-        request.post('/login', data.form).then(res => {
-          if (res.code === '200') {
-            ElMessage.success("登录成功")
-            localStorage.setItem('system-user', JSON.stringify(res.data))
-            if(res.data.role === '管理员') {
-              router.push('/manager/home')
-            } else {
-              router.push('/front/home')
-            }
-          } else {
-            ElMessage.error(res.msg)
-          }
-        })
-      }
-    })).catch(error => {
-      console.error(error)
-    })
+const data = reactive({
+  form: {role: '普通用户'},
+  rules: {
+    username: [
+      {required: true, message: '请输入账号', trigger: 'blur'},
+    ],
+    password: [
+      {required: true, message: '请输入密码', trigger: 'blur'},
+    ],
+    newPassword: [
+      {required: true, message: '请确认密码', trigger: 'blur'},
+    ]
   }
+})
+
+const formRef = ref()
+
+// 点击登录按钮的时候会触发这个方法
+const register = () => {
+  formRef.value.validate((valid => {
+    if (valid) {
+      // 调用后台的接口
+      request.post('/register', data.form).then(res => {
+        if (res.code === '200') {
+          ElMessage.success("恭喜您！注册成功")
+          router.push('/login')
+        } else {
+          ElMessage.error(res.msg)
+        }
+      })
+    }
+  })).catch(error => {
+    console.error(error)
+  })
+}
 
 </script>
 
 <style scoped>
 
 .login-container {
-  background: #2e3143;
+  background: #2e4339;
 }
 
 
@@ -113,7 +114,7 @@ section:hover {
     transform: rotateY(0deg);
   }
   100% {
-    transform: rotateY(360deg);
+    transform: rotateY(-360deg);
   }
 }
 
@@ -163,7 +164,6 @@ section div:nth-child(6) {
   transform: rotateY(300deg) translateZ(200px);
   box-shadow: 0 0 20px rgba(0, 0, 128, 0.5);
 }
-
 
 
 </style>

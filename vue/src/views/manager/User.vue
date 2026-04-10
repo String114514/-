@@ -164,7 +164,7 @@ const add = () => {
   })
 }
 
-const updata = () => {
+const update = () => {
   request.put('/user/update', data.form).then(res => {
     if (res.code === '200') {
       ElMessage.success('操作成功')
@@ -179,7 +179,7 @@ const updata = () => {
 const save = () => {
   formRef.value.validate((valid) => {
     if (valid) {    // 表示表单验证通过
-      data.form.id ? updata() : add()
+      data.form.id ? update() : add()
     }
   })
 }
