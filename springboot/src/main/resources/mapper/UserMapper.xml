@@ -20,7 +20,7 @@
     <select id="selectById" resultType="com.example.entity.User">
         select *
         from `user`
-        where username = #{id}
+        where id = #{id}
     </select>
 
     <delete id="deleteById">

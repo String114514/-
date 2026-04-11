@@ -2,7 +2,7 @@
   <div>
     <div style="height: 60px; background-color: #2e3143; display: flex; align-items: center;">
       <div style="flex: 1">
-        <div style="padding-left: 20px; display: flex; align-items: center">
+        <div style="padding-left: 20px; display: flex; align-items: center;">
           <img src="@/assets/imgs/logo.png" alt="" style="width: 40px">
           <div style="font-weight: bold; font-size: 24px; margin-left: 5px; color: #fff">校园小卖部</div>
         </div>
@@ -25,20 +25,34 @@
             <el-icon><HomeFilled /></el-icon>
             <span>系统首页</span>
           </el-menu-item>
+
           <el-sub-menu index="user">
             <template #title>
               <el-icon><User /></el-icon>
               <span>用户管理</span>
             </template>
+
             <el-menu-item index="/manager/user">
               <el-icon><User /></el-icon>
               <span>普通用户</span>
             </el-menu-item>
+
             <el-menu-item index="/manager/admin">
               <el-icon><User /></el-icon>
               <span>管理员信息</span>
             </el-menu-item>
           </el-sub-menu>
+
+          <el-menu-item index="/manager/person">
+            <el-icon><User /></el-icon>
+            <span>个人信息</span>
+          </el-menu-item>
+
+          <el-menu-item index="/manager/password">
+            <el-icon><Lock /></el-icon>
+            <span>修改密码</span>
+          </el-menu-item>
+
           <el-menu-item @click="logout">
             <el-icon><SwitchButton /></el-icon>
             <span>退出系统</span>
@@ -63,8 +77,8 @@ const data = reactive({
 })
 
 if (!data.user?.id) {
-  ElMessage.error('请登录！')
   router.push('/login')
+  ElMessage.error('请先登录！')
 }
 
 const updateUser = () => {
@@ -74,7 +88,7 @@ const updateUser = () => {
 const logout = () => {
   router.push('/login')
   ElMessage.success('退出成功')
-  localStorage.removeItem('code2026-user')
+  localStorage.removeItem('system-user')
 }
 </script>
 

@@ -62,8 +62,11 @@ public class WebController {
      */
     @PutMapping("/updatePassword")
     public Result updatePassword(@RequestBody Account account) {
-        if ("ADMIN".equals(account.getRole())) {
+        if ("管理员".equals(account.getRole())) {
             adminService.updatePassword(account);
+        }
+        if ("普通用户".equals(account.getRole())) {
+            userService.updatePassword(account);
         }
         return Result.success();
     }
